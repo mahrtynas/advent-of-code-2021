@@ -16,6 +16,6 @@ first = do
 
 second = do
     inp <- getInput
-    let a = init (init (init inp))
-        b = tail (tail (tail inp))
+    let a = init.init.init $ inp
+        b = tail.tail.tail $ inp
     print (sum [1 | (x, y) <- zip a b, y > x])
