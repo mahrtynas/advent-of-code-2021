@@ -1,4 +1,5 @@
 import numpy as np
+from typing import Tuple
 
 
 def parse_input(filename: str) -> np.ndarray:
@@ -8,10 +9,10 @@ def parse_input(filename: str) -> np.ndarray:
 
 directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
-def coord_is_in_arr(coord, h, w):
+def coord_is_in_arr(coord: Tuple[int, int], h: int, w:int) -> bool:
     return 0 <= coord[0] < h and 0 <= coord[1] < w
 
-def add_acc_risk(arr: np.ndarray) -> np.ndarray:
+def create_min_risk_map(arr: np.ndarray) -> np.ndarray:
     h, w = arr.shape
     output = np.empty((h, w))
     output[:] = np.NaN
@@ -23,7 +24,7 @@ def add_acc_risk(arr: np.ndarray) -> np.ndarray:
         for d in directions:
             ii, jj = (i + d[0], j + d[1])
             if coord_is_in_arr((ii, jj), h, w) and np.isnan(output[ii, jj]):
-                acc_v = v + arr[ii, jj]
+                acc_v = int(v + arr[ii, jj])
                 output[ii, jj] = acc_v
                 stack.append((acc_v, ii, jj))
     return output
@@ -41,11 +42,11 @@ def expand_map(arr: np.ndarray) -> np.ndarray:
 
 def main():
     inp = parse_input("input.txt")
-    result = add_acc_risk(inp)
+    result = create_min_risk_map(inp)
     print("Result of the first part:", result[-1, -1])
     # second part
     mm = expand_map(inp)
-    result = add_acc_risk(mm)
+    result = create_min_risk_map(mm)
     print("Result of the second part", result[-1, -1])
 
 
